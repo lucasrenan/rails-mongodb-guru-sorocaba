@@ -1,0 +1,65 @@
+== App criada na palestra Ruby on Rails + MongoDB no primeiro encontro do GURU Sorocaba
+
+=== Segue o passo a passo
+
+=== No console
+
+rvm use 1.9.2-p180@rails_mongo --create
+
+rails new ror_mongodb --skip-active-record
+
+=== Gemfile
+
+gem "mongoid"
+gem "dragonfly"
+gem "rack-cache", :require => 'rack/cache'
+
+=== Gerando um modelo de teste
+
+bundle install
+
+rails g mongoid:config
+
+rails g scaffold user name:string age:integer
+
+
+=== Initializer para o dragonfly
+
+require 'dragonfly'
+
+app = Dragonfly[:images]
+
+# Configure to use ImageMagick, Rails defaults, and the Mongo data store
+app.configure_with(:imagemagick)
+
+app.configure_with(:rails) do |c|
+  c.datastore = Dragonfly::DataStorage::MongoDataStore.new :db => Mongoid.database
+end
+
+# Allow all mongoid models to use the macro 'image_accessor'
+app.define_macro_on_include(Mongoid::Document, :image_accessor)
+
+=== application.rb
+
+config.middleware.insert 0, 'Dragonfly::Middleware', :images
+    config.middleware.insert_before 'Dragonfly::Middleware', 'Rack::Cache', {
+      :verbose     => true,
+      :metastore   => URI.encode("file:#{Rails.root}/tmp/dragonfly/cache/meta"),
+      :entitystore => URI.encode("file:#{Rails.root}/tmp/dragonfly/cache/body")
+    }
+
+=== Modelo de usuario
+
+field :cover_image_uid
+image_accessor :cover_image
+
+
+=== Formulario
+
+:html => {:multipart => true}
+
+
+=== Na view show
+
+<%= image_tag @user.cover_image.url %>
+
