@@ -50,8 +50,8 @@ rails g scaffold user name:string age:integer
 
 === Modelo de usuario
 
-  field :cover_image_uid
-  image_accessor :cover_image
+  field :photo_uid
+  image_accessor :photo
 
 
 === Formulario
@@ -61,5 +61,5 @@ rails g scaffold user name:string age:integer
 
 === Na view show
 
-  <%= image_tag @user.cover_image.url %>
+  <%= image_tag @user.photo.url %>
 
