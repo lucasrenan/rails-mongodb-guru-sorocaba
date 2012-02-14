@@ -1,12 +1,12 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.8'
+gem 'rails', '3.2.1'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem "mongoid", "2.0.2"
-gem "dragonfly", "0.9.3"
+gem "mongoid", "2.4.4"
+gem "dragonfly", "0.9.10"
 gem "rack-cache", :require => 'rack/cache'
 
 # Use unicorn as the web server
